@@ -3,6 +3,7 @@ import {BattleComponent} from './battle.component';
 import {Routes, RouterModule} from '@angular/router';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { BattleCalculatorComponent } from './battle-calculator/battle-calculator.component';
 
 const routes: Routes = [
   {
@@ -20,7 +21,8 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [
-    BattleComponent
+    BattleComponent,
+    BattleCalculatorComponent
   ],
   imports: [
     RouterModule.forChild(routes),

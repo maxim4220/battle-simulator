@@ -6,62 +6,51 @@
         <div class="form-group">
           <label for="username">Select the number of armies</label>
           <select name="username" id="username" formControlName="armys">
-              <option selected>2</option>
-              <option >3</option>
-              <option >4</option>
-
+            <option *ngFor="let n of [].constructor(numberOfArmies); let i = index;">{{i+1}}</option>
           </select>
-
-          <!-- <input  autocomplete="off" class="form-control" formControlName="username" id="username"
-                 type="text"/> -->
-
         </div>
         <div class="form-group">
           <label for="squads">Select the number of squads for each army</label>
           <select name="squads" id="squads" formControlName="squads">
-            <option selected>2</option>
-            <option >3</option>
-            <option >4</option>
+              <option *ngFor="let n of [].constructor(numberOfSquads); let i = index;">{{i+1}}</option>
         </select>
         </div>
-
         <div class="form-group">
           <label for="units">Select the number of units for armies</label>
           <select name="units" id="units" formControlName="units">
-            <option selected>5</option>
-            <option >6</option>
-            <option >7</option>
-            <option >8</option>
-            <option >9</option>
-            <option >10</option>
-
+              <option *ngFor="let n of numberOfUnits;">
+                    {{n}}
+              </option>
         </select>
-
         </div>
         <div class="form-group">
           <button  type="submit">
-
              Submit
           </button>
-
         </div>
       </form>
 </ng-container>
 
-
-
-
 <ng-template #armysGeneratedBlock>
-
-  Armies have been generated!!
   <!-- Display armies when user add an army -->
 <div class="ap-grid-container">
     <ng-container *ngFor="let army of armies; let i = index">
-
-        <div class="ap-grid-item">{{army.name}}</div>
+        <div class="ap-grid-item">
+          <h3>{{army.name}}</h3>
+          <form  [formGroup]="strategyForm">
+              <div class="form-group">
+                <label for="strategy">Strategy:</label>
+                <ng-container *ngFor="let strategy of strategies">
+                    <input  type="checkbox" [value]="strategy" (change)="onCheckChange($event, army)">
+                    {{strategy}}
+                </ng-container>
+              </div>
+            </form>
+        </div>
           </ng-container>
-
 </div>
-
+*If strategy is not selected - random strategy will be used <br>
+<button [disabled]="startCalculating" (click)="startCalculating = true">Start the battle</button>
+<app-battle-calculator *ngIf="startCalculating" [armies]="armies"></app-battle-calculator>
 </ng-template>
 </div>
