@@ -1,5 +1,5 @@
 import {NgModule} from '@angular/core';
-import {BattleComponent} from './battle.component';
+import {BattleComponent} from './battle-container.component';
 import {Routes, RouterModule} from '@angular/router';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { CommonModule } from '@angular/common';

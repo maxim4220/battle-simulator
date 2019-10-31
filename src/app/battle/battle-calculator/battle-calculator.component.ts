@@ -1,5 +1,5 @@
 import { Vehicles } from '../models/vehicles.model';
-import { Soldiers } from '../models/soldiers.model';
+import { Soldiers, Soldier } from '../models/soldiers.model';
 import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
@@ -8,6 +8,16 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./battle-calculator.component.scss']
 })
 export class BattleCalculatorComponent implements  OnInit {
+
+  a: Soldiers = {
+    experience: 0,
+    health: 100,
+    recharge: 1000,
+    getAtack(): number {
+      return 1;
+    }
+  };
+
   soldier = {
     health: 100,
     recharge: Math.floor(Math.random() * 2000) + 100,
@@ -24,6 +34,11 @@ export class BattleCalculatorComponent implements  OnInit {
   constructor() { }
 
   ngOnInit() {
+    console.log('a', this.a);
+    const person: Soldiers = new Soldier();
+    console.log('person', person);
+
+
     console.log('armies in calculator', this.armies);
     console.log('solder', this.soldier ) ;
     console.log('vehicle', this.vehicle ) ;
