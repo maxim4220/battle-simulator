@@ -5,7 +5,7 @@ import {Routes, RouterModule} from '@angular/router';
 const routes: Routes = [
   {
     path: 'battle-simulator',
-    loadChildren: () => import('./views/pages/battle/battle.module').then(m => m.BattleModule),
+    loadChildren: () => import('./battle/battle.module').then(m => m.BattleModule),
   },
 
   {path: '**', redirectTo: 'error/404', pathMatch: 'full'},

@@ -1,5 +1,5 @@
-import { Vehicles } from './../../../../core/battle/models/vehicles.model';
-import { Soldiers } from './../../../../core/battle/models/soldiers.model';
+import { Vehicles } from '../models/vehicles.model';
+import { Soldiers } from '../models/soldiers.model';
 import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
@@ -7,7 +7,7 @@ import { Component, OnInit, Input } from '@angular/core';
   templateUrl: './battle-calculator.component.html',
   styleUrls: ['./battle-calculator.component.scss']
 })
-export class BattleCalculatorComponent implements OnInit {
+export class BattleCalculatorComponent implements  OnInit {
   soldier = {
     health: 100,
     recharge: Math.floor(Math.random() * 2000) + 100,

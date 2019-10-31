@@ -31,7 +31,6 @@ const routes: Routes = [
     CommonModule
   ],
   providers: [],
-
 })
 
 export class BattleModule {
