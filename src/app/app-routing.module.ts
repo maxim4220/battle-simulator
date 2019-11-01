@@ -1,10 +1,12 @@
 import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
+import { BattleComponent } from './battle/battle-container.component';
 
 
 const routes: Routes = [
   {
     path: 'battle-simulator',
+    //component: BattleComponent
     loadChildren: () => import('./battle/battle-container.module').then(m => m.BattleModule),
   },
 
@@ -17,3 +19,4 @@ const routes: Routes = [
 })
 export class AppRoutingModule {
 }
+

@@ -3,7 +3,7 @@ import {BattleComponent} from './battle-container.component';
 import {Routes, RouterModule} from '@angular/router';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { BattleCalculatorComponent } from './battle-calculator/battle-calculator.component';
+import { BattleCalculatorComponent } from './battle-soldiers/battle-calculator.component';
 
 const routes: Routes = [
   {

@@ -45,12 +45,16 @@ export class BattleComponent implements OnInit  {
   }
 
   onSubmit() {
-    console.log('onSubm', this.f);
     if (this.battleForm.invalid) {
       return;
     }
     this.generateArmies = true;
-    this.buildArmyColumns(this.f.armys.value, this.f.squads.value, this.f.units.value);
+    if(this.f.armys.value && this.f.squads.value && this.f.units.value) {
+      this.buildArmyColumns(this.f.armys.value, this.f.squads.value, this.f.units.value);
+    } else {
+      // set by default if not selected
+      this.buildArmyColumns(2, 2, 5);
+    }
   }
 
   onCheckChange(event, army) {
