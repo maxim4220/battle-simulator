@@ -21,6 +21,7 @@ export class BattleCalculatorComponent implements OnInit {
   }
 
   ngOnInit() {
+    // this.testGame();
     this.generateSoldiersSquads();
     console.log('squads', this.squads);
   }
@@ -129,39 +130,39 @@ export class BattleCalculatorComponent implements OnInit {
     let players = ['squad 1', 'squad 2', 'squad 3', 'squad 4', 'squad 5', 'squad 6', 'squad 7', 'squad 8', 'squad 9', 'squad 10', 'squad 11', 'squad 12', 'squad 13', 'squad 14', 'squad 15', 'squad 16', 'squad 17', 'squad 18'].map(player => {
       return {
         name: player,
-        life: 100,
-        str: Math.random() * 0.1 + 1,
-        dex: Math.random() * 2 + 8
+        health: 100,
+        damage: Math.random() * 0.1 + 1,
+        defence: Math.random() * 2 + 8
       }
     });
     let winners = [];
     let round = 1;
     let match = (a, b) => {
-      console.log('match between ', a.name, ' (', a.life, 'hp) and ', b.name, '(', b.life, 'hp)');
+      console.log('match between ', a.name, ' (', a.health, 'hp) and ', b.name, '(', b.health, 'hp)');
       let lastAttacker = null;
-      while (a.life > 0 && b.life > 0) {
+      while (a.health > 0 && b.health > 0) {
         let [attacker, defender] = lastAttacker ? (lastAttacker === a && Math.random() > 0.3 ? [b, a] : [a, b]) : (Math.random() > 0.5 ? [a, b] : [b, a]);
-        let accuracy = attacker.dex * 0.5;
-        let evasion = defender.dex * 0.1;
+        let accuracy = attacker.defence * 0.5;
+        let evasion = defender.defence * 0.1;
         let chance = ((accuracy - evasion) / accuracy) * 100;
         if (chance > 0 && Math.random() * 100 < chance) {
           // hit
-          let hitPower = Math.random() * (100 * attacker.str) + attacker.str;
-          attacker.dex = Math.max(1, attacker.dex);
-          let parryPower = Math.random() * (defender.str + defender.dex) + defender.dex;
-          defender.dex = Math.max(1, defender.dex);
+          let hitPower = Math.random() * (100 * attacker.damage) + attacker.damage;
+          attacker.defence = Math.max(1, attacker.defence);
+          let parryPower = Math.random() * (defender.damage + defender.defence) + defender.defence;
+          defender.defence = Math.max(1, defender.defence);
           let damage = Math.floor(Math.max(0, hitPower - parryPower) * 10) / 10;
           console.log(attacker.name, ' hits ', defender.name, ' and does ', damage, ' damage');
-          defender.life = Math.floor(Math.max(0, defender.life - damage) * 10) / 10;
-          console.log(defender.name, ' has ', defender.life, ' life');
+          defender.health = Math.floor(Math.max(0, defender.health - damage) * 10) / 10;
+          console.log(defender.name, ' has ', defender.health, ' health');
           lastAttacker = attacker;
         } else {
           lastAttacker = null;
           console.log(attacker.name, ' missed ', defender.name);
         }
       }
-      let winner = a.life > b.life ? a : b;
-      winner.str += Math.random() * 0.3;
+      let winner = a.health > b.health ? a : b;
+      winner.damage += Math.random() * 0.3;
       return winner;
     };
     let getUserIndex = () => Math.floor(Math.random() * players.length);
@@ -182,9 +183,9 @@ export class BattleCalculatorComponent implements OnInit {
       let [a, b] = getPlayers();
       let winner = match(a, b);
       console.log(winner.name, ' is the winner!');
-      console.log(winner.name, ' has improved strength: ', winner.str);
-      winner.dex += 4;
-      winner.life = Math.min(100, winner.life + (Math.random() * 25 + 25));
+      console.log(winner.name, ' has improved strength: ', winner.damage);
+      winner.defence += 4;
+      winner.health = Math.min(100, winner.health + (Math.random() * 25 + 25));
       winners.push(winner);
     };
     let app = () => {
