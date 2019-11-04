@@ -1,6 +1,6 @@
 
-import {Soldier, Soldiers} from '../models/soldiers.model';
-import {Component, Input, OnInit} from '@angular/core';
+import { Soldier, Soldiers } from '../models/soldiers.model';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-battle-calculator',
@@ -8,8 +8,8 @@ import {Component, Input, OnInit} from '@angular/core';
   styleUrls: ['./battle-calculator.component.scss']
 })
 export class BattleCalculatorComponent implements OnInit {
-private gameOver = false;
-resultMsg = '';
+  private gameOver = false;
+  public resultMsg = '';
   @Input() armies: any;
 
   constructor() {
@@ -23,7 +23,7 @@ resultMsg = '';
   private generateSoldiers() {
     this.armies.forEach(element => {
       const soldier: Soldiers = new Soldier();
-      element = Object.assign(element, {squads: {squad: new Array(element.units).fill({soldier})}} );
+      element = Object.assign(element, { squads: { squad: new Array(element.units).fill({ soldier }) } });
     });
     this.calculateSquadSuccessChance(this.armies[0].squads.squad, this.armies[1].squads.squad);
   }
@@ -43,7 +43,7 @@ resultMsg = '';
     });
 
     // If average geometrical value of atacking squad is higher - apply damage!
-    if (this.geometricMean(firstSquadSuccess) > this.geometricMean(secondSquadSuccess) ) {
+    if (this.geometricMean(firstSquadSuccess) > this.geometricMean(secondSquadSuccess)) {
       // First squad wins. Calculate damage and apply to the second squad.
       const totalDamage = (0.05 + squad1[0].soldier.experience / 100) * squad1.length;
       squad2.forEach(soldier => {
@@ -52,7 +52,7 @@ resultMsg = '';
       this.incrementExperience(squad1);
 
     } else {
-    //  second squad wins. Calculate damage and apply to the first squad.
+      //  second squad wins. Calculate damage and apply to the first squad.
       const totalDamage = (0.05 + squad2[0].soldier.experience / 100) * squad2.length;
       squad1.forEach(soldier => {
         soldier.soldier.health -= totalDamage / squad2.length;
@@ -83,19 +83,9 @@ resultMsg = '';
     });
   }
 
-  // To DO: fix hard code
   // calculate attack probability success
   private geometricMean(numbers: Array<any>) {
-    return Math.pow(numbers[0] * numbers[1] * numbers[2] * numbers[3] * numbers[4], 1 / numbers.length);
+    return Math.pow(numbers.reduce((a, b) => a * b), 1 / numbers.length);
   }
-
-  // private averageSquadRecharge(squad1, squad2, i) {
-  //   if (!this.gameOver) {
-  //     const timer = Math.floor(Math.random() * 2000) + 100;
-  //     return setTimeout(() => {
-  //       this.calculateSquadSuccessChance(squad1, squad2, i);
-  //  }, timer);
-  //   }
-  // }
 
 }
