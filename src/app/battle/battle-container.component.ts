@@ -51,8 +51,8 @@ export class BattleComponent implements OnInit {
       return;
     }
     this.generateArmies = true;
-    if (this.f.armys.value && this.f.squads_number.value && this.f.units.value) {
-      this.buildArmyColumns(this.f.armys.value, this.f.squads_number.value, this.f.units.value);
+    if (this.f.squads_number.value && this.f.units.value) {
+      this.buildArmyColumns(+this.f.armys.value, +this.f.squads_number.value, +this.f.units.value);
     } else {
       // set by default if not selected 2 armies, 2 squads and 5 units.
       this.buildArmyColumns(2, 2, 5);
@@ -65,10 +65,8 @@ export class BattleComponent implements OnInit {
   }
 
   private buildArmyColumns(armies, squads_number, units): void {
-    for (let i = 1; i <= squads_number; i++) {
+    for (let i = 0; i < squads_number; i++) {
       this.squads.push({ name: 'squads' + i, strategy: 'random', squads_number, units });
-      //console.log(' this.squads',  this.squads);
-
      // this.armies.push({ name: 'army ' + i, strategy: 'random',squads_number, units });
     }
     this.strategyForm = this.formBuilder.group({

@@ -12,7 +12,7 @@ export class BattleCalculatorComponent implements OnInit {
   public resultMsg = '';
   private firstBattle = true;
   private index = 0;
-  @Input() armies: any;
+  // @Input() armies: any;
 
   @Input() squads: any = [];
 
@@ -22,9 +22,6 @@ export class BattleCalculatorComponent implements OnInit {
 
   ngOnInit() {
     this.generateSoldiersSquads();
-
-    //   this.startBattleGame(this.armies);
-
     console.log('squads', this.squads);
   }
 
@@ -34,66 +31,62 @@ export class BattleCalculatorComponent implements OnInit {
     this.squads.forEach(element => {
       element = Object.assign(element, { squad: [] });
       const soldier: Soldiers = new Soldier();
-   
-      element.squad.push(Array(element.units).fill(soldier));
+      // element.squad.push(Array(element.units).fill(soldier));
+      element.squad = Array(element.units).fill(soldier);
+
       //  element.squad.push(new Array(element.units).fill({soldier}));
-      contestSquads.push(element.squad[0]);
+      contestSquads.push(element.squad);
     });
     console.log('contestSquad', contestSquads);
+
     this.startBattleGame(contestSquads);
   }
 
   public startBattleGame(squads): void {
-    
     console.log('squads 0', squads[this.index]);
     console.log('squads 1', squads[this.index + 1]);
-    
-    if (this.geometricMean(this.calculateEachSoldierSuccess(squads[this.index])) > this.geometricMean(this.calculateEachSoldierSuccess(squads[this.index+1]))) {
-      console.log('IFFF!!!!!!!');
-           this.addDamage(squads[this.index + 1]);
-           this.incrementExperience(squads[this.index]);
-    } else {
-      console.log('else!');
-       this.addDamage(squads[this.index]);
-       this.incrementExperience(squads[this.index + 1]);
+    if (!this.gameOver) {
+      if (this.geometricMean(this.calculateEachSoldierSuccess(squads[this.index])) > this.geometricMean(this.calculateEachSoldierSuccess(squads[this.index + 1]))) {
+        console.log('IFFF!!!!!!!');
+        this.addDamage(squads[this.index + 1]);
+        this.incrementExperience(squads[this.index]);
+      } else {
+        console.log('else!');
+        this.addDamage(squads[this.index]);
+        this.incrementExperience(squads[this.index + 1]);
+      }
+      this.determineWinnerSquad(squads);
     }
-     this.determineWinnerSquad(squads);
- 
+
   }
 
-    private determineWinnerSquad(squads) {
-    if (!this.gameOver && squads[this.index][0].health > 0 && squads[this.index + 1][0].health > 0) {
-      console.log('IF!!');
+  private determineWinnerSquad(squads) {
+    if (squads[this.index][0].health > 0 && squads[this.index + 1][0].health > 0) {
       this.startBattleGame(squads);
-     // this.startBattle(squad1, squad2);
     } else {
       if (squads[this.index][0].health <= 0) {
         console.log('SECOND SQUAD HAS WON');
-        
-     
         this.resultMsg = 'SECOND SQUAD HAS WON';
         this.firstBattle = false;
-      // squads[this.index] = squads.splice(this.index, 1);
-        this.squads[this.index].squad = [];
-      //  this.gameOver = true;
-      //  this.startBattle(this.armies[0].squads[1], this.armies[1].squads[1]);
-
+        this.squads.splice(this.index, 1);
       }
-      if (squads[this.index +1][0].health <= 0) {
-        console.log('First SQUAD HAS WON');
-       // squads[this.index + 1] = squads.splice(this.index + 1, 1);
-       this.squads[this.index + 1].squad = [];
+      if (squads[this.index + 1][0].health <= 0) {
+      this.squads.splice(this.index + 1, 1);
         this.resultMsg = 'FIRST SQUAD HAS WON';
         this.firstBattle = false;
-       // this.gameOver = true;
-        // this.startBattle(this.armies[0].squads[1], this.armies[1].squads[1]);
       }
-      console.log('squadadad', this.squads);
-      // this.armies.forEach(element => {
-      //   if (this.checkDeadArmies(element)) {
-      //     this.gameOver = true;
-      //   }
-      // });
+      if (this.squads.length == 1) {
+        this.gameOver = true;
+        console.log('GAME OVER! the WINNER IS:', this.squads[0]);
+      } else {
+        console.log('squads!!!', squads);
+        const contestSquads = [];
+        this.squads.forEach(element => {
+          contestSquads.push(element.squad);
+        });
+         this.startBattleGame(contestSquads);
+      }
+     console.log('squadadad', this.squads);
     }
   }
 
@@ -126,7 +119,7 @@ export class BattleCalculatorComponent implements OnInit {
   private addDamage(squad): void {
     const totalDamage = (0.05 + squad[0].experience / 100) * squad.length;
     console.log('addDamage', totalDamage);
-    
+
     squad.forEach(soldier => {
       soldier.health -= totalDamage / squad.length;
     });
