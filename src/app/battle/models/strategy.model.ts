@@ -1,83 +1,49 @@
-/**
- * Интерфейс Стратегии объявляет операции, общие для всех поддерживаемых версий
- * некоторого алгоритма.
- *
- * Контекст использует этот интерфейс для вызова алгоритма, определённого
- * Конкретными Стратегиями.
- */
-interface Strategy {
-  doAlgorithm(data: string[]): string[];
+
+// In an OOP Language -
+// TypeScript
+// interface all sorting algorithms must implement
+interface Attacktrategy {
+  attack(SquadsArray);
 }
 
-/**
- * Контекст определяет интерфейс, представляющий интерес для клиентов.
- */
-class Context {
-  /**
-   * @type {Strategy} Контекст хранит ссылку на один из объектов Стратегии.
-   * Контекст не знает конкретного класса стратегии. Он должен работать со
-   * всеми стратегиями через интерфейс Стратегии.
-   */
-  private strategy: Strategy;
-
-  /**
-   * Обычно Контекст принимает стратегию через конструктор, а также
-   * предоставляет сеттер для её изменения во время выполнения.
-   */
-  constructor(strategy: Strategy) {
-      this.strategy = strategy;
-  }
-
-  /**
-   * Обычно Контекст позволяет заменить объект Стратегии во время выполнения.
-   */
-  public setStrategy(strategy: Strategy) {
-      this.strategy = strategy;
-  }
-
-  /**
-   * Вместо того, чтобы самостоятельно реализовывать множественные версии
-   * алгоритма, Контекст делегирует некоторую работу объекту Стратегии.
-   */
-  public doSomeBusinessLogic(): void {
-      // ...
-
-      console.log('Context: Sorting data using the strategy (not sure how it\'ll do it)');
-      const result = this.strategy.doAlgorithm(['a', 'b', 'c', 'd', 'e']);
-      console.log(result.join(','));
-
-      // ...
+class RandomAttack implements Attacktrategy {
+  attack(SquadsArray):void {
+      console.log("RandomAttack algorithm")
+      // implementation here. Must find the weakest oposing squad and attack.
   }
 }
 
-
-/**
- * Конкретные Стратегии реализуют алгоритм, следуя базовому интерфейсу
- * Стратегии. Этот интерфейс делает их взаимозаменяемыми в Контексте.
- */
-class ConcreteStrategyA implements Strategy {
-  public doAlgorithm(data: string[]): string[] {
-      return data.sort();
+class WeakestAttack implements Attacktrategy {
+  attack(SquadsArray):void {
+      console.log("WeakestAttack algorithm")
+      // implementation here. Must find the weakest squad and attack. Weakest by health of by experience???
+      
   }
 }
 
-class ConcreteStrategyB implements Strategy {
-  public doAlgorithm(data: string[]): string[] {
-      return data.reverse();
+class StrongestAttack implements Attacktrategy {
+  attack(SquadsArray): void{
+      console.log("StrongestAttack algorithm")
+      // implementation here. Must find the strongest squad and attack. Weakest by health of by experience???
+
   }
 }
 
+export class AttackProgramm {
+  private sortingStrategy: Attacktrategy
+  constructor(public squadsArray: Array<Number>) {
+  }
 
-/**
- * Клиентский код выбирает конкретную стратегию и передаёт её в контекст. Клиент
- * должен знать о различиях между стратегиями, чтобы сделать правильный выбор.
- */
-const context = new Context(new ConcreteStrategyA());
-console.log('Client: Strategy is set to normal sorting.');
-context.doSomeBusinessLogic();
+  public runAttack(attackStrategy: Attacktrategy) {
+      return this.sortingStrategy.attack(this.squadsArray);
+  }
+}
+// instantiate the `AttackProgramm` with an array of squads
 
-console.log('');
-
-console.log('Client: Strategy is set to reverse sorting.');
-context.setStrategy(new ConcreteStrategyB());
-context.doSomeBusinessLogic();
+const attackProgram = new AttackProgramm([9,2,5,3,8,4,1,8,0,3]) //!!! Array of squads must be provided.
+// random attack
+attackProgram.runAttack(new RandomAttack());
+// weakest attack
+attackProgram.runAttack(new WeakestAttack());
+// strongest attack
+attackProgram.runAttack(new StrongestAttack());

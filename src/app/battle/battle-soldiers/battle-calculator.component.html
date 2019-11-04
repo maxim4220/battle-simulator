@@ -1,7 +1,7 @@
 
 
 <h3 *ngIf="resultMsg; else calculateBlock">{{resultMsg}}</h3>
-
+<button (click)="startBattle(this.armies[0].squads[1], this.armies[1].squads[1])">Start new round</button>
 <ng-template #calculateBlock>
 <h3>Calculating...</h3>
 </ng-template>

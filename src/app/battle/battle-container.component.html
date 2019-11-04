@@ -51,6 +51,6 @@
 </div>
 *If strategy is not selected - random strategy will be used <br>
 <button [disabled]="startCalculating" (click)="startCalculating = true">Start the battle</button>
-<app-battle-calculator *ngIf="startCalculating" [armies]="armies"></app-battle-calculator>
+<app-battle-calculator *ngIf="startCalculating" [squads]="squads"></app-battle-calculator>
 </ng-template>
 </div>
