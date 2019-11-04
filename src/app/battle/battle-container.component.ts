@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-battle',
+  selector: 'app-battle-container',
   templateUrl: './battle-container.component.html',
   styleUrls: ['./battle-container.component.scss']
 })
@@ -33,7 +33,7 @@ export class BattleComponent implements OnInit {
   ngOnInit() {
     this.battleForm = this.formBuilder.group({
       armys: [''],
-      squads: [''],
+      squads_number: [''],
       units: ['']
     });
 
@@ -49,8 +49,8 @@ export class BattleComponent implements OnInit {
       return;
     }
     this.generateArmies = true;
-    if (this.f.armys.value && this.f.squads.value && this.f.units.value) {
-      this.buildArmyColumns(this.f.armys.value, this.f.squads.value, this.f.units.value);
+    if (this.f.armys.value && this.f.squads_number.value && this.f.units.value) {
+      this.buildArmyColumns(this.f.armys.value, this.f.squads_number.value, this.f.units.value);
     } else {
       // set by default if not selected 2 armies, 2 squads and 5 units.
       this.buildArmyColumns(2, 2, 5);
@@ -61,9 +61,9 @@ export class BattleComponent implements OnInit {
     army.strategy = event.target.value;
   }
 
-  private buildArmyColumns(armies, squads, units): void {
+  private buildArmyColumns(armies, squads_number, units): void {
     for (let i = 1; i <= armies; i++) {
-      this.armies.push({ name: 'army ' + i, strategy: 'random', squads, units });
+      this.armies.push({ name: 'army ' + i, strategy: 'random',squads_number, units });
     }
     this.strategyForm = this.formBuilder.group({
       strategy: [''],

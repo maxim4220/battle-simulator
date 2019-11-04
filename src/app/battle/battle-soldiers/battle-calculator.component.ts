@@ -16,34 +16,41 @@ export class BattleCalculatorComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log('armies11', this.armies);
     this.generateSoldiers();
   }
 
   // Form the soldiers groups. Add them to squads array.
-  private generateSoldiers() {
+  private generateSoldiers(): void {
     this.armies.forEach(element => {
-      const soldier: Soldiers = new Soldier();
-      element = Object.assign(element, { squads: { squad: new Array(element.units).fill({ soldier }) } });
+    
+     element = Object.assign(element, { squads: [] });
+     // Add soldiers to each squad.
+      for (let i = 1; i <= element.squads_number; i++) {
+        const soldier: Soldiers = new Soldier();
+       element.squads.push(new Array(element.units).fill({ soldier }));
+      //  element.squads.forEach(squad => {
+      //    squad.push(soldier)
+      //  });
+       // element = Object.assign(element, { squads: { i: new Array(element.units).fill({ soldier }) } });
+      }    
+
+     // element = Object.assign(element, { squads: { squad: new Array(element.units).fill({ soldier }) } });
     });
-    this.calculateSquadSuccessChance(this.armies[0].squads.squad, this.armies[1].squads.squad);
+
+    console.log('armies22', this.armies);
+    this.calculateSquadSuccessChance(this.armies[0].squads[0], this.armies[1].squads[0]);
+
+  // this.calculateSquadSuccessChance(this.armies);
+  //  this.armies.squads.forEach(squad => {
+  //   this.calculateSquadSuccessChance(squad);
+  //  });
   }
 
   // Calculate success probability of each squad.
-  private calculateSquadSuccessChance(squad1, squad2) {
-    const firstSquadSuccess = [];
-    squad1.forEach(element => {
-      const res = 0.5 * (1 + element.soldier.health / 100) * Math.floor(Math.random() * 100) + (50 + element.soldier.experience / 100);
-      firstSquadSuccess.push(res);
-    });
-
-    const secondSquadSuccess = [];
-    squad2.forEach(element => {
-      const res = 0.5 * (1 + element.soldier.health / 100) * Math.floor(Math.random() * 100) + (50 + element.soldier.experience / 100);
-      secondSquadSuccess.push(res);
-    });
-
+  private calculateSquadSuccessChance(squad1, squad2): void {
     // If average geometrical value of atacking squad is higher - apply damage!
-    if (this.geometricMean(firstSquadSuccess) > this.geometricMean(secondSquadSuccess)) {
+    if (this.geometricMean(this.calculateEachSoldierSuccess(squad1)) > this.geometricMean(this.calculateEachSoldierSuccess(squad2))) {
       // First squad wins. Calculate damage and apply to the second squad.
       const totalDamage = (0.05 + squad1[0].soldier.experience / 100) * squad1.length;
       squad2.forEach(soldier => {
@@ -66,16 +73,26 @@ export class BattleCalculatorComponent implements OnInit {
     } else {
       this.gameOver = true;
       if (squad1[0].soldier.health <= 0) {
+        this.armies[0].squads[0] = this.armies[0].squads.filter(x => x[0] == squad1);
         this.resultMsg = 'SECOND SQUAD HAS WON';
       }
-      if (squad2[1].soldier.health <= 0) {
+      if (squad2[0].soldier.health <= 0) {
+       this.armies[1].squads[0] = this.armies[1].squads.filter(x => x[0] == squad2);
         this.resultMsg = 'FIRST SQUAD HAS WON';
       }
-
     }
   }
 
-  private incrementExperience(squad) {
+  private calculateEachSoldierSuccess(squad) {
+    const totalSuccess = [];
+    squad.forEach(element => {
+      const res = 0.5 * (1 + element.soldier.health / 100) * Math.floor(Math.random() * 100) + (50 + element.soldier.experience / 100);
+      totalSuccess.push(res);
+    });
+    return totalSuccess;
+  }
+ 
+  private incrementExperience(squad): void {
     squad.forEach(element => {
       if (element.soldier.experience < 50) {
         element.soldier.experience++;
@@ -86,6 +103,11 @@ export class BattleCalculatorComponent implements OnInit {
   // calculate attack probability success
   private geometricMean(numbers: Array<any>) {
     return Math.pow(numbers.reduce((a, b) => a * b), 1 / numbers.length);
+  }
+
+  // Check if all squads in the army are dead.
+  private checkDeadArmies(army) {
+   return army.squads.every(squad => squad.length == 0);
   }
 
 }
