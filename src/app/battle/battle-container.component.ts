@@ -34,7 +34,6 @@ export class BattleComponent implements OnInit {
 
   ngOnInit() {
     this.battleForm = this.formBuilder.group({
-      armys: [''],
       squads_number: [''],
       units: ['']
     });
@@ -52,10 +51,10 @@ export class BattleComponent implements OnInit {
     }
     this.generateArmies = true;
     if (this.f.squads_number.value && this.f.units.value) {
-      this.buildArmyColumns(+this.f.armys.value, +this.f.squads_number.value, +this.f.units.value);
+      this.buildArmyColumns( +this.f.squads_number.value, +this.f.units.value);
     } else {
       // set by default if not selected 2 armies, 2 squads and 5 units.
-      this.buildArmyColumns(2, 2, 5);
+      this.buildArmyColumns( 2, 5);
     }
     this.startCalculating = true;
   }
@@ -64,7 +63,7 @@ export class BattleComponent implements OnInit {
     army.strategy = event.target.value;
   }
 
-  private buildArmyColumns(armies, squads_number, units): void {
+  private buildArmyColumns( squads_number, units): void {
     for (let i = 0; i < squads_number; i++) {
       this.squads.push({ name: 'squads' + i, strategy: 'random', squads_number, units });
      // this.armies.push({ name: 'army ' + i, strategy: 'random',squads_number, units });

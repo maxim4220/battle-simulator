@@ -4,19 +4,13 @@
 
       <form (ngSubmit)="onSubmit()" [formGroup]="battleForm">
         <div class="form-group">
-          <label for="username">Select the number of armies</label>
-          <select name="username" id="username" formControlName="armys">
-            <option *ngFor="let n of [].constructor(numberOfArmies); let i = index;">{{i+1}}</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="squads">Select the number of squads for each army</label>
+          <label for="squads">Select the number of squads </label>
           <select name="squads" id="squads" formControlName="squads_number">
               <option *ngFor="let n of [].constructor(numberOfSquads); let i = index;">{{i+1}}</option>
         </select>
         </div>
         <div class="form-group">
-          <label for="units">Select the number of units for armies</label>
+          <label for="units">Select the number of units for each squad</label>
           <select name="units" id="units" formControlName="units">
               <option *ngFor="let n of numberOfUnits;">
                     {{n}}
@@ -34,14 +28,14 @@
 <ng-template #armysGeneratedBlock>
   <!-- Display armies when user add an army -->
 <div class="ap-grid-container">
-    <ng-container *ngFor="let army of armies; let i = index">
+    <ng-container *ngFor="let squad of squads; let i = index">
         <div class="ap-grid-item">
-          <h3>{{army.name}}</h3>
+          <h3>{{squad.name}}</h3>
           <form  [formGroup]="strategyForm">
               <div class="form-group">
                 <label for="strategy">Strategy:</label>
                 <ng-container *ngFor="let strategy of strategies">
-                    <input  type="checkbox" [value]="strategy" (change)="onCheckChange($event, army)">
+                    <input  type="checkbox" [value]="strategy" (change)="onCheckChange($event, squad)">
                     {{strategy}}
                 </ng-container>
               </div>
