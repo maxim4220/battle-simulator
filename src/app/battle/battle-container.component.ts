@@ -14,7 +14,7 @@ export class BattleComponent implements OnInit {
   // The choice of attack strategy per army: random|weakest|strongest
   public strategies = ['random', 'weakest', 'strongest'];
   // The number of squads per army: 2 <= n
-  public numberOfSquads = 6;
+  public numberOfSquads = 10;
   // The number of units per squad: 5 <= n <= 10
   public numberOfUnits = [5, 6, 7, 8, 9, 10];
   // Forms
@@ -56,7 +56,7 @@ export class BattleComponent implements OnInit {
       // set by default if not selected 2 armies, 2 squads and 5 units.
       this.buildArmyColumns( 2, 5);
     }
-    this.startCalculating = true;
+    
   }
 
   public onCheckChange(event, army) {
@@ -66,7 +66,6 @@ export class BattleComponent implements OnInit {
   private buildArmyColumns( squads_number, units): void {
     for (let i = 0; i < squads_number; i++) {
       this.squads.push({ name: 'squads' + i, strategy: 'random', squads_number, units });
-     // this.armies.push({ name: 'army ' + i, strategy: 'random',squads_number, units });
     }
     this.strategyForm = this.formBuilder.group({
       strategy: [''],

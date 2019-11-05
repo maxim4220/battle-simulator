@@ -33,7 +33,7 @@
           <h3>{{squad.name}}</h3>
           <form  [formGroup]="strategyForm">
               <div class="form-group">
-                <label for="strategy">Strategy:</label>
+                <label for="strategy">Strategy:</label> <br>
                 <ng-container *ngFor="let strategy of strategies">
                     <input  type="checkbox" [value]="strategy" (change)="onCheckChange($event, squad)">
                     {{strategy}}
