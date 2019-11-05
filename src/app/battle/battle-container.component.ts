@@ -72,16 +72,16 @@ export class BattleComponent implements OnInit {
     this.strategyForm = this.formBuilder.group({
       strategy: [''],
     });
+    this.squads = this.squads.sort(() => Math.random() - 0.5);
   }
 
     // Form the soldiers groups. Add them to squads array.
     public generateSoldiersSquads(): void {
-      this.squads = this.squads.sort(() => Math.random() - 0.5);
+     // this.squads = this.squads.sort(() => Math.random() - 0.5);
       this.squads.forEach(element => {
         element = Object.assign(element, { squad: [] });
         const soldier: Soldiers = new Soldier();
         element.squad = Array(element.units).fill(soldier);
-
         element.totalHealth = soldier.health * element.units;
       });
       this.startCalculating = true;
