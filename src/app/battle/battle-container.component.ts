@@ -1,6 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Soldiers, Soldier } from './models/soldiers.model';
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup} from '@angular/forms';
+import {Soldier} from './helper-classes/soldiers';
+import {Units} from './interfaces/units.model';
 
 @Component({
   selector: 'app-battle-container',
@@ -22,7 +23,7 @@ export class BattleComponent implements OnInit {
   public battleForm: FormGroup;
   public strategyForm: FormGroup;
 
-  public squads:any = [];
+  public squads: any = [];
 
 
   // property to determines that user has selected battle properties
@@ -33,6 +34,11 @@ export class BattleComponent implements OnInit {
   constructor(private formBuilder: FormBuilder) {
   }
 
+  // convenience getter for easy access to form fields
+  get f() {
+    return this.battleForm.controls;
+  }
+
   ngOnInit() {
     this.battleForm = this.formBuilder.group({
       squads_number: [''],
@@ -41,50 +47,46 @@ export class BattleComponent implements OnInit {
 
   }
 
-  // convenience getter for easy access to form fields
-  get f() {
-    return this.battleForm.controls;
-  }
-
   public onSubmit() {
     if (this.battleForm.invalid) {
       return;
     }
     this.generateArmies = true;
     if (this.f.squads_number.value && this.f.units.value) {
-      this.buildArmyColumns( +this.f.squads_number.value, +this.f.units.value);
+      this.buildArmyColumns(+this.f.squads_number.value, +this.f.units.value);
     } else {
       // set by default if not selected 2 armies, 2 squads and 5 units.
-      this.buildArmyColumns( 2, 5);
+      this.buildArmyColumns(2, 5);
     }
-    
+
   }
 
   public onCheckChange(event, army) {
     army.strategy = event.target.value;
   }
 
-  private buildArmyColumns( squads_number, units): void {
+  // Form the soldiers groups. Add them to squads array.
+  public generateSoldiersSquads(): void {
+    // this.squads = this.squads.sort(() => Math.random() - 0.5);
+    this.squads.forEach(element => {
+      element = Object.assign(element, {squad: []});
+      const soldier: Units = new Soldier();
+      element.squad = Array(element.units).fill(soldier);
+      element.totalHealth = soldier.health * element.units;
+    });
+    this.startCalculating = true;
+  }
+
+  private buildArmyColumns(squads_number, units): void {
     for (let i = 0; i < squads_number; i++) {
       let totalHealth = 0;
-      this.squads.push({ name: 'squads' + i, strategy: 'random', squads_number, units, totalHealth });
+      this.squads.push({name: 'squads' + i, strategy: 'random', squads_number, units, totalHealth});
     }
     this.strategyForm = this.formBuilder.group({
       strategy: [''],
     });
     this.squads = this.squads.sort(() => Math.random() - 0.5);
-  }
 
-    // Form the soldiers groups. Add them to squads array.
-    public generateSoldiersSquads(): void {
-     // this.squads = this.squads.sort(() => Math.random() - 0.5);
-      this.squads.forEach(element => {
-        element = Object.assign(element, { squad: [] });
-        const soldier: Soldiers = new Soldier();
-        element.squad = Array(element.units).fill(soldier);
-        element.totalHealth = soldier.health * element.units;
-      });
-      this.startCalculating = true;
-    }
+  }
 
 }

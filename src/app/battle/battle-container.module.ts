@@ -1,9 +1,9 @@
 import {NgModule} from '@angular/core';
 import {BattleComponent} from './battle-container.component';
-import {Routes, RouterModule} from '@angular/router';
+import {RouterModule, Routes} from '@angular/router';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { BattleCalculatorComponent } from './battle-soldiers/battle-calculator.component';
+import {CommonModule} from '@angular/common';
+import {BattleCalculatorComponent} from './battle-simulator/battle-simulator.component';
 
 const routes: Routes = [
   {

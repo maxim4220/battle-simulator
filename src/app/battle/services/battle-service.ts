@@ -4,11 +4,11 @@ import {Injectable} from '@angular/core';
   providedIn: 'root'
 })
 export class BattleService {
-  
+
   constructor() {
   }
 
-  
+
   public calculateEachSoldierSuccess(squads) {
     const totalSuccess = [];
     squads.squad.forEach(element => {
@@ -17,29 +17,29 @@ export class BattleService {
     return totalSuccess;
   }
 
-   // calculate attack probability success
-   public geometricMean(numbers: Array<any>) {
+  // calculate attack probability success
+  public geometricMean(numbers: Array<any>) {
     return Math.pow(numbers.reduce((a, b) => a * b), 1 / numbers.length);
   }
 
-  public incrementExperience(squad): void {
-    squad.squad.forEach(element => {
+  public incrementExperience(squads): void {
+    squads.squad.forEach(element => {
       if (element.experience < 50) {
         element.experience++;
       }
     });
   }
 
-  public addDamage(squad): void {
-    const totalDamage = (0.05 + squad.squad[0].experience / 100) * squad.squad.length;
-    squad.squad.forEach(soldier => {
-      soldier.health -= totalDamage / squad.squad.length;
-      squad.totalHealth -= totalDamage;
+  public addDamage(squads): void {
+    const totalDamage = (0.05 + squads.squad[0].experience / 100) * squads.squad.length;
+    squads.squad.forEach(soldier => {
+      soldier.health -= totalDamage / squads.squad.length;
+      squads.totalHealth -= totalDamage;
     });
   }
 
   public addSquadTotalDamage(squad) {
-     
+
   }
 
 }
