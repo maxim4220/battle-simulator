@@ -22,32 +22,33 @@ return randNum(SquadsArray, attackingSquad);
 
 export class WeakestAttack implements Attacktrategy {
   // implementation here. Must find the weakest squad and attack. Weakest by health of by experience???
-  attack(SquadsArray, attackingSquad):void {
+  attack(SquadsArray, attackingSquad) {
       console.log("WeakestAttack algorithm")
       console.log('SquadsArray', SquadsArray);
       console.log('attackingSquad', attackingSquad);
-      var competing = []
-      let counter = 0;
-   SquadsArray.forEach(element => {
-     console.log('element!', element);
-     
-    //  if(element != attackingSquad) {
-    //    if(element[0].experience == counter) {
-    //     competing = [element, attackingSquad];
-    //      return competing;
-    //    } else {
-    //       counter++;
-    //    }
-    //  }
-   });
+     let result = SquadsArray.reduce(function(res, obj) {
+        return (obj.totalHealth < res.totalHealth) ? obj : res;
+    });
+      
+    if(result != attackingSquad) {
+      return [result,attackingSquad];
+    }
 
+     
   }
 }
 
 export class StrongestAttack implements Attacktrategy {
-  attack(SquadsArray, attackingSquad): void{
+  attack(SquadsArray, attackingSquad){
       console.log("StrongestAttack algorithm")
       // implementation here. Must find the strongest squad and attack. Weakest by health of by experience???
+      let result = SquadsArray.reduce(function(res, obj) {
+        return (obj.totalHealth > res.totalHealth) ? obj : res;
+    });
+      
+    if(result != attackingSquad) {
+      return [result,attackingSquad];
+    }
 
   }
 }

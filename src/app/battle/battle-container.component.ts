@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Soldiers, Soldier } from './models/soldiers.model';
 
 @Component({
   selector: 'app-battle-container',
@@ -65,11 +66,25 @@ export class BattleComponent implements OnInit {
 
   private buildArmyColumns( squads_number, units): void {
     for (let i = 0; i < squads_number; i++) {
-      this.squads.push({ name: 'squads' + i, strategy: 'random', squads_number, units });
+      let totalHealth = 0;
+      this.squads.push({ name: 'squads' + i, strategy: 'random', squads_number, units, totalHealth });
     }
     this.strategyForm = this.formBuilder.group({
       strategy: [''],
     });
   }
+
+    // Form the soldiers groups. Add them to squads array.
+    public generateSoldiersSquads(): void {
+      this.squads = this.squads.sort(() => Math.random() - 0.5);
+      this.squads.forEach(element => {
+        element = Object.assign(element, { squad: [] });
+        const soldier: Soldiers = new Soldier();
+        element.squad = Array(element.units).fill(soldier);
+
+        element.totalHealth = soldier.health * element.units;
+      });
+      this.startCalculating = true;
+    }
 
 }
