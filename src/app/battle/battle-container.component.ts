@@ -70,7 +70,8 @@ export class BattleComponent implements OnInit {
   public generateSoldiersSquads(): void {
     this.squads.forEach(element => {
       element = Object.assign(element, {squad: []});
-      element.squad =  new Squads().createSquad(element.units);
+      element.squad =  new Squads().createSoldierSquad(element.units);
+      element.totalHealth = 100 * element.units;
     });
     this.startCalculating = true;
   }
