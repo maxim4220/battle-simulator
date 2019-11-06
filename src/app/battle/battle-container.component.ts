@@ -84,8 +84,6 @@ export class BattleComponent implements OnInit {
     this.strategyForm = this.formBuilder.group({
       strategy: [''],
     });
-    this.squads = this.squads.sort(() => Math.random() - 0.5);
-
   }
 
 }
