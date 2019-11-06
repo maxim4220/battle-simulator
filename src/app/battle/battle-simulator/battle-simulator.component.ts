@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {RandomAttack, WeakestAttack, StrongestAttack} from '../helper-classes/strategies';
 import {BattleService} from '../services/battle-service';
+import { BattleCalculator } from '../helper-classes/battle-calculator';
 
 @Component({
   selector: 'app-battle-simulator',
@@ -8,36 +9,27 @@ import {BattleService} from '../services/battle-service';
   styleUrls: ['./battle-simulator.component.scss']
 })
 export class BattleCalculatorComponent implements OnInit {
-  public resultMsg = '';
   @Input() squads: any = [];
+
   private gameOver = false;
-  private attacking = 1;
   private defending = 0;
+  private attacking = 1;
   private survivers = [];
 
-  constructor(private bService: BattleService) {
-  }
+  private calculator = new BattleCalculator();
+
 
   ngOnInit() {
     this.setAttackStrategy(this.squads);
   }
 
-  // Check if the game is not over. Check if geometrical average of defending team is 
+  // Check if the game is not over. Check if geometrical average of defending team is. 
   public startBattleGame(squads): void {
-    if (!this.gameOver) {
-      if (
-        this.bService.geometricMean(
-          this.bService.calculateEachSoldierSuccess(squads[this.defending])
-        ) <
-        this.bService.geometricMean(
-          this.bService.calculateEachSoldierSuccess(squads[this.attacking])
-        )
-      ) {
-        this.bService.addDamage(squads[this.defending]);
-        this.bService.incrementExperience(squads[this.attacking]);
+    if (!this.gameOver && this.calculator.checkIfAttackingSquadWon(squads)) {
+        this.calculator.addDamage(squads[this.defending]);
+        this.calculator.incrementUnitsExperience(squads[this.attacking]);
       }
       this.determineWinnerSquad(squads);
-    }
   }
 
   private setAttackStrategy(squads): void {
@@ -60,7 +52,7 @@ export class BattleCalculatorComponent implements OnInit {
   }
 
   private determineWinnerSquad(squads) {
-    if (squads[this.defending].squad[0].health <= 0) {
+    if (squads[this.defending].totalHealth <= 0) {
       this.squads.splice(this.defending, 1);
       this.survivers.push(squads[this.attacking]);
       // TO do: fix logic for survivers.

@@ -6,13 +6,13 @@ import {Attacktrategy} from '../interfaces/attack-strategy.interface';
 export class RandomAttack implements Attacktrategy {
   attack(SquadsArray, attackingSquad) {
     function randNum(arr, exclude) {
-      let randNumber = Math.floor(Math.random() * SquadsArray.length);
-      if (SquadsArray[randNumber] == attackingSquad) {
-        return randNum(SquadsArray, attackingSquad);
-      } else {
-        const competing = [SquadsArray[randNumber], attackingSquad];
-        return competing;
-      }
+        let randNumber = Math.floor(Math.random() * SquadsArray.length);
+        if (SquadsArray[randNumber] == attackingSquad) {
+          return randNum(SquadsArray, attackingSquad);
+        } else {
+          const competing = [SquadsArray[randNumber], attackingSquad];
+          return competing;
+        }
     }
 
     return randNum(SquadsArray, attackingSquad);
