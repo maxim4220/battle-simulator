@@ -1,6 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { RandomAttack, WeakestAttack, StrongestAttack } from '../helper-classes/strategies';
-import { BattleCalculator } from '../helper-classes/battle-calculator';
+import {Component, Input, OnInit} from '@angular/core';
+import {RandomAttack, StrongestAttack, WeakestAttack} from '../helper-classes/strategies';
+import {BattleCalculator} from '../helper-classes/battle-calculator';
 
 @Component({
   selector: 'app-battle-simulator',
@@ -17,22 +17,14 @@ export class BattleCalculatorComponent implements OnInit {
 
   private calculator = new BattleCalculator();
 
-
   ngOnInit() {
     while (!this.gameOver) {
       this.setAttackStrategy(this.squads);
-      this.gameOver = this.calculator.checkIfTheSimulatorIsFinished(this.squads.length);
+      this.gameOver = this.calculator.checkIfTheSimulatorIsFinished(this.squads.length); // uncomment me!
       // OUTPUT THE WINNER SQUAD to console!
+      // tslint:disable-next-line:no-unused-expression
       this.gameOver ? console.log('Game over, winner is:', this.squads) : null;
     }
-  }
- 
-  private startBattleGame(squads): void {
-    if (this.calculator.checkIfAttackingSquadWon(squads)) {
-      this.calculator.addDamage(squads[this.defending]);
-      this.calculator.incrementUnitsExperience(squads[this.attacking]);
-    }
-    this.determineWinnerSquad(squads);
   }
 
   private setAttackStrategy(squads): void {
@@ -40,19 +32,22 @@ export class BattleCalculatorComponent implements OnInit {
       if (element.strategy === 'random') {
         const competing = new RandomAttack().attack(this.squads, element);
         this.startBattleGame(competing);
-      }
-      else if (element.strategy === 'weakest') {
+      } else if (element.strategy === 'weakest') {
         const competing = new WeakestAttack().attack(this.squads, element);
-        if (competing) {
-          this.startBattleGame(competing);
-        }
+        this.startBattleGame(competing);
       } else if (element.strategy === 'strongest') {
-         const competing = new StrongestAttack().attack(this.squads, element);
-         if(competing) {
-           this.startBattleGame(competing);
-         }
+        const competing = new StrongestAttack().attack(this.squads, element);
+        this.startBattleGame(competing);
       }
     });
+  }
+
+  private startBattleGame(squads): void {
+    if (this.calculator.checkIfAttackingSquadWon(squads)) {
+      this.calculator.addDamage(squads[this.defending]);
+      this.calculator.incrementUnitsExperience(squads[this.attacking]);
+    }
+    this.determineWinnerSquad(squads);
   }
 
   private determineWinnerSquad(squads) {

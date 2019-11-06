@@ -1,8 +1,9 @@
 import {Soldier} from './soldiers';
-import { Vehicle } from './vehicles';
-import { AbstractSquadFactory } from '../interfaces/squad.interface';
+import {Vehicle} from './vehicles';
+import {AbstractSquadFactory} from '../interfaces/squad.interface';
 
 export class Squads implements AbstractSquadFactory {
+  recharge = Math.floor(Math.random() * 1000);
 
   createSoldierSquad(numberOfUnits: number) {
     const result = [];

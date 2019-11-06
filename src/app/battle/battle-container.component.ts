@@ -1,8 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
-import {Soldier} from './helper-classes/soldiers';
-import {Units} from './interfaces/units.interface';
-import { Squads } from './helper-classes/squads';
+import {Squads} from './helper-classes/squads';
 
 @Component({
   selector: 'app-battle-container',
@@ -12,8 +10,6 @@ import { Squads } from './helper-classes/squads';
 
 export class BattleComponent implements OnInit {
   // Battle configurations properties
-  // The number of armies: 2 <= n
-  public numberOfArmies = 6;
   // The choice of attack strategy per army: random|weakest|strongest
   public strategies = ['random', 'weakest', 'strongest'];
   // The number of squads per army: 2 <= n
@@ -26,10 +22,8 @@ export class BattleComponent implements OnInit {
 
   public squads: any = [];
 
-
   // property to determines that user has selected battle properties
   public generateArmies = false;
-  public armies: any = [];
   public startCalculating = false;
 
   constructor(private formBuilder: FormBuilder) {
@@ -45,7 +39,6 @@ export class BattleComponent implements OnInit {
       squads_number: [''],
       units: ['']
     });
-
   }
 
   public onSubmit() {
@@ -70,16 +63,17 @@ export class BattleComponent implements OnInit {
   public generateSoldiersSquads(): void {
     this.squads.forEach(element => {
       element = Object.assign(element, {squad: []});
-      element.squad =  new Squads().createSoldierSquad(element.units);
+      element.squad = new Squads().createSoldierSquad(element.units);
       element.totalHealth = 100 * element.units;
+      element.recharge = Math.floor(Math.random() * 100);
     });
     this.startCalculating = true;
   }
 
   private buildArmyColumns(squads_number, units): void {
     for (let i = 0; i < squads_number; i++) {
-      let totalHealth = 0;
-      this.squads.push({name: 'squads' + i, strategy: 'random', squads_number, units, totalHealth});
+      const totalHealth = 0, recharge = 0;
+      this.squads.push({name: 'squads' + i, strategy: 'random', squads_number, units, totalHealth, recharge});
     }
     this.strategyForm = this.formBuilder.group({
       strategy: [''],
