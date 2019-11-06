@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {Soldier} from './helper-classes/soldiers';
 import {Units} from './interfaces/units.interface';
+import { Squads } from './helper-classes/squads';
 
 @Component({
   selector: 'app-battle-container',
@@ -61,18 +62,15 @@ export class BattleComponent implements OnInit {
 
   }
 
-  public onCheckChange(event, army) {
+  public onCheckChange(event, army): void {
     army.strategy = event.target.value;
   }
 
   // Form the soldiers groups. Add them to squads array.
   public generateSoldiersSquads(): void {
-    // this.squads = this.squads.sort(() => Math.random() - 0.5);
     this.squads.forEach(element => {
       element = Object.assign(element, {squad: []});
-      const soldier: Units = new Soldier();
-      element.squad = Array(element.units).fill(soldier);
-      element.totalHealth = soldier.health * element.units;
+      element.squad =  new Squads().createSquad(element.units);
     });
     this.startCalculating = true;
   }
