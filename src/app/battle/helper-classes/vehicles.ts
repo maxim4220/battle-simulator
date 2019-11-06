@@ -1,4 +1,4 @@
-import {Units} from '../interfaces/units.model';
+import {Units} from '../interfaces/units.interface';
 
 export interface Vehicles extends Units {
   operators: number;

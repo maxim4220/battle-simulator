@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {Soldier} from './helper-classes/soldiers';
-import {Units} from './interfaces/units.model';
+import {Units} from './interfaces/units.interface';
 
 @Component({
   selector: 'app-battle-container',
