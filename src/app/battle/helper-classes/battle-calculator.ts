@@ -1,5 +1,6 @@
 import { BattleCalculatorInterface } from '../interfaces/battle-calculator.interface';
 
+// The class plays the role of the facade to hide and separate the code complexity.
 export class BattleCalculator implements BattleCalculatorInterface {
 
     public checkIfAttackingSquadWon(squads) {

@@ -20,7 +20,9 @@ export class BattleCalculatorComponent implements OnInit {
 
 
   ngOnInit() {
-    this.setAttackStrategy(this.squads);
+    while (this.squads.length > 1 && !this.gameOver) {
+      this.setAttackStrategy(this.squads);
+    }
   }
 
   // Check if the game is not over. Check if geometrical average of defending team is. 
@@ -37,37 +39,50 @@ export class BattleCalculatorComponent implements OnInit {
       if (element.strategy === 'random') {
         const competing = new RandomAttack().attack(this.squads, element);
         this.startBattleGame(competing);
-      } else if (element.strategy === 'weakest') {
-        const competing = new WeakestAttack().attack(this.squads, element);
-        if (competing) {
-          this.startBattleGame(competing);
-        }
-      } else if (element.strategy === 'strongest') {
-         const competing = new StrongestAttack().attack(this.squads, element);
-         if(competing) {
-           this.startBattleGame(competing);
-         }
-      }
+      } 
+      // else if (element.strategy === 'weakest') {
+      //   const competing = new WeakestAttack().attack(this.squads, element);
+      //   if (competing) {
+      //     this.startBattleGame(competing);
+      //   }
+      // } else if (element.strategy === 'strongest') {
+      //    const competing = new StrongestAttack().attack(this.squads, element);
+      //    if(competing) {
+      //      this.startBattleGame(competing);
+      //    }
+      // }
     });
   }
 
   private determineWinnerSquad(squads) {
     if (squads[this.defending].totalHealth <= 0) {
-      this.squads.splice(this.defending, 1);
-      this.survivers.push(squads[this.attacking]);
-      // TO do: fix logic for survivers.
-      if (this.survivers.length > 1) {
-        this.survivers.splice(this.defending, 1);
-        this.setAttackStrategy(this.survivers);
-      } else {
-        this.gameOver = true;
-        console.log('Game OVER! Winner:', this.survivers);
-      }
-    } else {
-      // Recharge must be implemented.
-      this.startBattleGame(squads.reverse());
+      this.squads = this.squads.filter(x => x !== squads[this.defending]);
+    } 
+    if(this.squads.length == 1 ) {
+      console.log('game over! this squads!!!', this.squads);
+      this.gameOver = true;
     }
   }
+
+  // private determineWinnerSquad(squads) {
+  //   if (squads[this.defending].totalHealth <= 0) {
+  //     this.squads.splice(this.defending, 1);
+      
+  //     this.survivers.push(squads[this.attacking]);
+  //     // TO do: fix logic for survivers.
+
+  //     if (this.survivers.length > 1) {
+  //       this.survivers.splice(this.defending, 1);
+  //       this.setAttackStrategy(this.survivers);
+  //     } else {
+  //       this.gameOver = true;
+  //       console.log('Game OVER! Winner:', this.survivers);
+  //     }
+  //   } else {
+  //     // Recharge must be implemented.
+  //     this.startBattleGame(squads.reverse());
+  //   }
+  // }
 }
 
 /**
