@@ -8,10 +8,8 @@ export class BattleCalculator implements BattleCalculatorInterface {
         const attacking = 1;
         if (this.geometricMean(this.calculateEachSoldierSuccess(squads[defending])) < this.geometricMean(
             this.calculateEachSoldierSuccess(squads[attacking]))) {
-            console.log('attaker won!!!');
             return true;
         } else {
-            console.log('won defender!');
             return false;
         }
     }
@@ -19,18 +17,22 @@ export class BattleCalculator implements BattleCalculatorInterface {
     public addDamage(squads): void {
         const totalDamage = (0.05 + squads.squad[0].experience / 100) * squads.squad.length;
         squads.squad.forEach(soldier => {
-          soldier.health -= totalDamage / squads.squad.length;
+            soldier.health -= totalDamage / squads.squad.length;
         });
         squads.totalHealth -= totalDamage;
-      }
+    }
 
-   public incrementUnitsExperience(squads): void {
+    public incrementUnitsExperience(squads): void {
         squads.squad.forEach(element => {
-          if (element.experience < 50) {
-            element.experience++;
-          }
+            if (element.experience < 50) {
+                element.experience++;
+            }
         });
-      }
+    }
+
+    public checkIfTheSimulatorIsFinished(squadsLength) {
+       return squadsLength === 1 ? true : false;
+    }
 
     private geometricMean(numbers: Array<any>) {
         return Math.pow(numbers.reduce((a, b) => a * b), 1 / numbers.length);
@@ -44,7 +46,7 @@ export class BattleCalculator implements BattleCalculatorInterface {
         return totalSuccess;
     }
 
-   
+
 
 
 }
