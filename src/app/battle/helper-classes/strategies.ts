@@ -21,7 +21,7 @@ export class WeakestAttack implements Attacktrategy {
   // implementation here. Must find the weakest squad and attack. Weakest by health of by experience???
   attack(SquadsArray, attackingSquad) {
 
-    const result = SquadsArray.reduce(function(res, obj) {
+    const result = SquadsArray.reduce((res, obj) => {
       return obj.totalHealth < res.totalHealth ? obj : res;
     });
     if (result !== attackingSquad) {
@@ -35,7 +35,7 @@ export class WeakestAttack implements Attacktrategy {
 export class StrongestAttack implements Attacktrategy {
   attack(SquadsArray, attackingSquad) {
     // implementation here. Must find the strongest squad and attack. Weakest by health of by experience???
-    const result = SquadsArray.reduce(function(res, obj) {
+    const result = SquadsArray.reduce((res, obj) => {
       return obj.totalHealth > res.totalHealth ? obj : res;
     });
     if (result !== attackingSquad) {
