@@ -1,9 +1,10 @@
 import {Soldier} from './soldiers';
 import { Vehicle } from './vehicles';
+import { AbstractSquadFactory } from '../interfaces/squad.interface';
 
-export class Squads {
+export class Squads implements AbstractSquadFactory {
 
-  createSoldierSquad(numberOfUnits) {
+  createSoldierSquad(numberOfUnits: number) {
     const result = [];
     for (let i = 0; i < numberOfUnits; i++) {
       result.push(new Soldier());
@@ -11,7 +12,7 @@ export class Squads {
     return result;
   }
 
-  createVehiclesSquad(numberOfUnits) {
+  createVehiclesSquad(numberOfUnits: number) {
     const result = [];
     for (let i = 0; i < numberOfUnits; i++) {
       result.push(new Vehicle());
