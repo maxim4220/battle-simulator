@@ -1,14 +1,22 @@
 import {Soldier} from './soldiers';
+import { Vehicle } from './vehicles';
 
 export class Squads {
 
-  createSquad(numberOfUnits) {
-    const res = [];
+  createSoldierSquad(numberOfUnits) {
+    const result = [];
     for (let i = 0; i < numberOfUnits; i++) {
-      res.push(new Soldier());
-      console.log('res', new Soldier());
+      result.push(new Soldier());
     }
-    return res;
+    return result;
+  }
 
+  createVehiclesSquad(numberOfUnits) {
+    const result = [];
+    for (let i = 0; i < numberOfUnits; i++) {
+      result.push(new Vehicle());
+    }
+    return result;
   }
 }
+
