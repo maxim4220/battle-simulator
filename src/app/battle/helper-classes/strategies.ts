@@ -9,7 +9,6 @@ export class RandomAttack implements Attacktrategy {
     return this.attack(SquadsArray, attackingSquad);
   } 
   let res = [defending, attackingSquad];
-  console.log('res', res);
   return res;
   }
 }

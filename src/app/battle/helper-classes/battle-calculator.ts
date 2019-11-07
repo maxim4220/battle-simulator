@@ -16,8 +16,6 @@ export class BattleCalculator implements BattleCalculatorInterface {
       soldier.health -= totalDamage / squads.squad.length;
     });
     squads.totalHealth -= totalDamage;
-   // console.log('damage', squads);
-    
   }
 
   public incrementUnitsExperience(squads): void {
