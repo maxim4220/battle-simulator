@@ -3,4 +3,5 @@ export interface Units {
   recharge: number;
   operators?: number;
   experience?: number;
+  attackSuccess(): number;
 }

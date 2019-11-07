@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {RandomAttack, StrongestAttack, WeakestAttack} from '../helper-classes/strategies';
-import {BattleCalculator} from '../helper-classes/battle-calculator';
+import {CheckGameOver, DetermineWinner, SetStrategy, StartBattleGame, BattleFacade} from '../helper-classes/battle-facade';
 
 @Component({
   selector: 'app-battle-simulator',
@@ -9,51 +8,20 @@ import {BattleCalculator} from '../helper-classes/battle-calculator';
 })
 
 export class BattleCalculatorComponent implements OnInit {
+
   @Input() squads: any = [];
 
-  private gameOver = false;
-  private defending = 0;
-  private attacking = 1;
-
-  private calculator = new BattleCalculator();
-
   ngOnInit() {
-    while (!this.gameOver) {
-      this.setAttackStrategy(this.squads);
-      this.gameOver = this.calculator.checkIfTheSimulatorIsFinished(this.squads.length); // uncomment me!
-      // OUTPUT THE WINNER SQUAD to console!
-      // tslint:disable-next-line:no-unused-expression
-      this.gameOver ? console.log('Game over, winner is:', this.squads) : null;
+  let setStrategy = new SetStrategy();
+  let startBattle = new StartBattleGame();
+  let determineWinner = new DetermineWinner();
+  let checkGameOver = new CheckGameOver();
+ 
+  let battleFacade = new BattleFacade(setStrategy, startBattle, determineWinner, checkGameOver, );
+  battleFacade.beginCompetition(this.squads);
+    while(!battleFacade.gameOver) {
+      battleFacade.beginCompetition(this.squads);
     }
   }
 
-  private setAttackStrategy(squads): void {
-    squads.forEach(element => {
-      if (element.strategy === 'random') {
-        const competing = new RandomAttack().attack(this.squads, element);
-        this.startBattleGame(competing);
-      } else if (element.strategy === 'weakest') {
-        const competing = new WeakestAttack().attack(this.squads, element);
-        this.startBattleGame(competing);
-      } else if (element.strategy === 'strongest') {
-        const competing = new StrongestAttack().attack(this.squads, element);
-        this.startBattleGame(competing);
-      }
-    });
-  }
-
-  private startBattleGame(squads): void {
-    if (this.calculator.checkIfAttackingSquadWon(squads)) {
-      this.calculator.addDamage(squads[this.defending]);
-      this.calculator.incrementUnitsExperience(squads[this.attacking]);
-    }
-    this.determineWinnerSquad(squads);
-  }
-
-  private determineWinnerSquad(squads) {
-    if (squads[this.defending].totalHealth <= 0) {
-      this.squads = this.squads.filter(x => x !== squads[this.defending]);
-    }
-  }
 }
-

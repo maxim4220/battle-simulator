@@ -16,6 +16,8 @@ export class BattleCalculator implements BattleCalculatorInterface {
       soldier.health -= totalDamage / squads.squad.length;
     });
     squads.totalHealth -= totalDamage;
+   // console.log('damage', squads);
+    
   }
 
   public incrementUnitsExperience(squads): void {
@@ -42,5 +44,11 @@ export class BattleCalculator implements BattleCalculatorInterface {
     return totalSuccess;
   }
 
+  //   The Vehicle attack success probability is determined as follows:
+  // 0.5 * (1 + vehicle.health / 100) * gavg(operators.attack_success)
+  // where gavg is the geometric average of the attack success of all the vehicle operators
+  private calculateVehiclesSuccess(squads) {
+    return 0.5 * (1 + squads.health / 100) * this.geometricMean(squads.soldiers)
+  }
 
 }

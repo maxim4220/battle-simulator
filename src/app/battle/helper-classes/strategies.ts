@@ -3,24 +3,20 @@ import {Attacktrategy} from '../interfaces/attack-strategy.interface';
 
 
 export class RandomAttack implements Attacktrategy {
-  attack(SquadsArray, attackingSquad) {
-    function randNum(arr, exclude) {
-      const randNumber = Math.floor(Math.random() * SquadsArray.length);
-      if (SquadsArray[randNumber] === attackingSquad) {
-        return randNum(SquadsArray, attackingSquad);
-      } else {
-        return [SquadsArray[randNumber], attackingSquad];
-      }
-    }
-
-    return randNum(SquadsArray, attackingSquad);
+ public attack(SquadsArray, attackingSquad) {
+ let defending = SquadsArray[Math.round((Math.random()*SquadsArray.length))];
+  if (defending == attackingSquad || defending == undefined){
+    return this.attack(SquadsArray, attackingSquad);
+  } 
+  let res = [defending, attackingSquad];
+  console.log('res', res);
+  return res;
   }
 }
 
 export class WeakestAttack implements Attacktrategy {
   // implementation here. Must find the weakest squad and attack. Weakest by health of by experience???
-  attack(SquadsArray, attackingSquad) {
-
+  public attack(SquadsArray, attackingSquad) {
     const result = SquadsArray.reduce((res, obj) => {
       return obj.totalHealth < res.totalHealth ? obj : res;
     });
@@ -33,7 +29,7 @@ export class WeakestAttack implements Attacktrategy {
 }
 
 export class StrongestAttack implements Attacktrategy {
-  attack(SquadsArray, attackingSquad) {
+  public attack(SquadsArray, attackingSquad) {
     // implementation here. Must find the strongest squad and attack. Weakest by health of by experience???
     const result = SquadsArray.reduce((res, obj) => {
       return obj.totalHealth > res.totalHealth ? obj : res;

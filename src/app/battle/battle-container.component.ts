@@ -8,6 +8,7 @@ import {Squads} from './helper-classes/squads';
   styleUrls: ['./battle-container.component.scss']
 })
 
+// Этот компонент служит только для ввода условий по количеству команд и количеству юнитов пользователем. Вся логика в Battle Simulator component
 export class BattleComponent implements OnInit {
   // Battle configurations properties
   // The choice of attack strategy per army: random|weakest|strongest
@@ -63,6 +64,7 @@ export class BattleComponent implements OnInit {
   public generateSoldiersSquads(): void {
     this.squads.forEach(element => {
       element = Object.assign(element, {squad: []});
+      // element.squad = new Squads().createSoldierSquad(element.units);
       element.squad = new Squads().createSoldierSquad(element.units);
       element.totalHealth = 100 * element.units;
       element.recharge = Math.floor(Math.random() * 100);
